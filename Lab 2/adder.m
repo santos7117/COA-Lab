@@ -1,4 +1,4 @@
-function [s c] = adder (bin1, bin2, sub=0)
+function [s] = adder (bin1, bin2, sub=0)
 
 	if (nargin < 2)
 		error("Too few arguments");
@@ -17,6 +17,7 @@ function [s c] = adder (bin1, bin2, sub=0)
 	
 	s = zeros(1, gt);	%initialize sum with greater length
 	c = sub;
+	
 	while (i >= 1 && j >= 1)
 		[s(gt) c] = FullAdder(bin1(i--), XOR(bin2(j--), sub), c);
 		--gt;
@@ -29,5 +30,9 @@ function [s c] = adder (bin1, bin2, sub=0)
 	while (j >= 1)
 		[s(j) c] = FullAdder(0, XOR(bin2(j--), sub), c);
 	endwhile
+
+	if (c)
+		s = [c s];
+	endif
 	
 endfunction
