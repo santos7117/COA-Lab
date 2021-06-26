@@ -1,4 +1,12 @@
 # Booth's Algorithm for multiplication
+# Takes 2 signed binary number
+#
+# mpc =  5 => [0 1 0 1]
+# mpl = -5 => [1 0 1 1]
+#           *___________
+# p = [1 1 1 0 0 1 1 1]
+# Since MSB == 1
+# ans = TwosCompplement(p) = [0 0 0 1 1 0 0 1]
 function [p] = multiplier(mpc, mpl)
     
     len_mpl = length(mpl);
@@ -18,19 +26,24 @@ function [p] = multiplier(mpc, mpl)
             tmp = TwosComplement(mpl);
         endif
 
-        acc = adder(acc, tmp)
+        acc = adder(acc, tmp);
         [acc sh_mpc lsb] = ASHR(acc, sh_mpc);
         disp([acc sh_mpc lsb]);
 
     endfor
 
     p = [acc sh_mpc];
+    msb = p(1);
+    if (msb)
+        disp("Negative");
+        p = TwosComplement(p);
+    endif
     
 endfunction
 
 
 
-# Arithmetic SHR for accumulator and multiplicand
+# Arithmetic Shift Right for accumulator and multiplicand
 #
 # acc    = [1 0 1]            tmp = [0 0 1]
 #            \ \ \                    \ \ \
