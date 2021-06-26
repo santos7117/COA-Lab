@@ -38,7 +38,7 @@ function formatResult(mpc, mpl, part_prod, p)
 
 	disp("_________________________________________________");
 	disp(mpc);
-	disp(" *");
+	disp("   *");
 	disp(mpl);
 	disp("_________________________________________________");
 	disp(part_prod);
