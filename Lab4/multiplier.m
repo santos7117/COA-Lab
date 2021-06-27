@@ -1,5 +1,5 @@
 # Booth's Algorithm for multiplication
-# Takes 2 signed binary number
+# Takes 2 signed or unsigned binary number
 #
 # mpc =  5 => [0 1 0 1]
 # mpl = -5 => [1 0 1 1]
@@ -15,14 +15,14 @@ function [p] = multiplier(mpc, mpl)
     acc = zeros(1, len_mpc);
     sh_mpc = mpc; lsb = 0;
 
-    for i = len_mpl : -1 : 1
+    for i = 1 : len_mpl
 
         tmp = zeros(1, len_mpl);
 
-        if ( sh_mpc(len_mpc)==0 && lsb==1 )
+        if ( sh_mpc(end)==0 && lsb==1 )
             tmp = mpl;
         endif
-        if ( sh_mpc(len_mpc)==1 && lsb==0 )
+        if ( sh_mpc(end)==1 && lsb==0 )
             tmp = TwosComplement(mpl);
         endif
 
@@ -62,9 +62,9 @@ endfunction
 
 # Shift Right for a binary number
 #
-#    bin = [1 0 0 1]
+#    bin = [1 0 0 1] (msb = 1)
 #            \ \ \ \
-# sh_tmp = [0 1 0 0] -> 1
+# sh_tmp = [1 1 0 0] -> 1
 #                 lsb = 1
 function [sh_bin lsb] = shiftRight(bin)
     
