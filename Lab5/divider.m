@@ -2,7 +2,7 @@
 # Takes 2 equal length unsigned binary number
 #
 # dvd =  5 => [0 1 0 1]
-#                /
+#             ----------
 # dvs =  4 => [0 1 0 0]
 #
 #       qtn = [0 0 0 1]
@@ -14,26 +14,38 @@ function [qtn, rmd] = divider(dvd, dvs)
     len_dvs = length(dvs);
     acc = zeros(1, len_dvd);            % set up accumulator
     sh_dvd = dvd;                       % for shifting dividend
+    add_next = 0;
 
     if (dvs == zeros(1, len_dvs))   
-        return;
+      return;
     endif
 
-    for i = 1 : len_dvd
-    
-        [acc sh_dvd] = ASHL(acc, sh_dvd);
+    for i = 1 : len_dvd    
 
+      [acc sh_dvd] = ASHL(acc, sh_dvd);
+
+      if (add_next)
+        acc = adder(acc, dvs);
+      else
         acc = substracter(acc, dvs);
-        
-        msb = acc(1);
-        if (msb)
-            acc = adder(acc, dvs);       % restore acc
-            sh_dvd(end) = 0;
-        endif
-        
-        disp([acc sh_dvd]);
+      endif
+      
+      msb = acc(1);
+      if (msb)
+        add_next = 1;
+        sh_dvd(end) = 0;
+      else
+        add_next = 0;
+      endif
+      
+      disp([acc sh_dvd]);
 
     endfor
+
+    # restore on the last step
+    if (add_next)
+      acc = adder(acc, dvs);
+    endif
 
     qtn = sh_dvd;
     rmd = acc;
